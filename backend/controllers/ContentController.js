@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler'
-import Content from '../models/ContentModel'
+import Content from '../models/ContentModel.js'
 
 
 // @desc    Get all contents

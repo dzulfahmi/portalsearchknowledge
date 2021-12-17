@@ -2,13 +2,13 @@ import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 
-import connectDB from './config/db';
-import cors from './middleware/CorsMiddleware';
-import { errorHandler, notFound } from './middleware/ErrorMiddleware';
+import connectDB from './config/db.js';
+import cors from './middleware/CorsMiddleware.js';
+import { errorHandler, notFound } from './middleware/ErrorMiddleware.js';
 
-import contentRoutes from './routes/ContentRoutes';
-import homeRoutes from './routes/HomeRoutes';
-import userRoutes from './routes/UserRoutes';
+import contentRoutes from './routes/ContentRoutes.js';
+import homeRoutes from './routes/HomeRoutes.js';
+import userRoutes from './routes/UserRoutes.js';
 
 
 dotenv.config();

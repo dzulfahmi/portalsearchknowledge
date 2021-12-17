@@ -2,7 +2,7 @@ import express from 'express'
 import { 
     admin, 
     protect 
-} from '../middleware/AuthMiddleware'
+} from '../middleware/AuthMiddleware.js'
 import { 
     authUser, 
     getUserById, 
@@ -10,7 +10,7 @@ import {
     getUsers, 
     registerUser,
     updateUser,
-} from '../controllers/UserController'
+} from '../controllers/UserController.js'
 
 const router = express.Router()
 
