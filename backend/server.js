@@ -6,6 +6,7 @@ import connectDB from './config/db';
 import cors from './middleware/CorsMiddleware';
 import { errorHandler, notFound } from './middleware/ErrorMiddleware';
 
+import userRoutes from './routes/UserRoutes';
 
 
 dotenv.config();
@@ -31,6 +32,8 @@ if (ENV === 'production' || ENV === 'staging') {
 
 app.use(cors);
 app.use(express.json());
+
+app.use('/api/users', userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
