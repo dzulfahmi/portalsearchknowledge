@@ -1,0 +1,2 @@
+Catatan mongoose:
+https://mongoosejs.com/docs/migrating_to_6.html#no-more-deprecation-warning-options

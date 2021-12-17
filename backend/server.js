@@ -19,6 +19,7 @@ const app = express();
 const PORT = process.env.PORT;
 const ENV = process.env.APP_ENV;
 
+console.log('isi env', ENV, PORT);
 if (ENV === 'staging' || ENV === 'local') {
   app.use(morgan('dev'))
 }
