@@ -3,6 +3,8 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 
 import connectDB from './config/db';
+import cors from './middleware/CorsMiddleware';
+import { errorHandler, notFound } from './middleware/ErrorMiddleware';
 
 
 
@@ -27,6 +29,10 @@ if (ENV === 'production' || ENV === 'staging') {
   })
 }
 
+app.use(cors);
 app.use(express.json());
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(PORT, console.log(`Server running in ${ENV} mode on port ${PORT}`));
