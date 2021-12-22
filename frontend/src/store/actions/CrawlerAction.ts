@@ -12,7 +12,7 @@ export const getCrawlerResult = (qparam: any) => (dispatch: any, getState: any) 
     limit: qparam && qparam.limit ? qparam.limit : 10,
   };
 
-  httpRequestAxiosService.get(process.env.REACT_APP_MAIN_API + 'contents?limit=' + param.limit + '&page=' + param.page, tokenConfig(getState))
+  httpRequestAxiosService.get('/api/contents?limit=' + param.limit + '&page=' + param.page, tokenConfig(getState))
     .subscribe((resp: any) => {
       dispatch({
         type: CRAWLER_GET_SUCCESS,
@@ -38,7 +38,7 @@ export const getCrawlerResult = (qparam: any) => (dispatch: any, getState: any) 
 export const getCrawlerCount = () => (dispatch: any, getState: any) => {
   dispatch({type: CRAWLER_LOADING});
 
-  httpRequestAxiosService.get(process.env.REACT_APP_MAIN_API + 'contents/count', tokenConfig(getState))
+  httpRequestAxiosService.get('/api/contents/count', tokenConfig(getState))
     .subscribe((resp: any) => {
       dispatch({
         type: CRAWLER_GET_COUNT_SUCCESS,

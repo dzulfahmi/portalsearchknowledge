@@ -17,7 +17,7 @@ import axios from 'axios';
 export const login = (payload: any) => (dispatch: any) => {
   dispatch({type: AUTH_LOADING});
 
-  httpRequestAxiosService.post(process.env.REACT_APP_MAIN_API + 'users/login', payload).subscribe(
+  httpRequestAxiosService.post('/api/users/login', payload).subscribe(
     (response: any) => {
       dispatch({
         type: LOGIN_SUCCESS,
