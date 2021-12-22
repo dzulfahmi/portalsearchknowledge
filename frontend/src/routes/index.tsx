@@ -4,7 +4,7 @@ import AdminLayout from '../layouts/AdminLayout';
 import NotFound from '../layouts/NotFound';
 import Login from '../pages/auth/Login';
 import CrawlerList from '../pages/crawler/List';
-import Dashboard from '../pages/dashboard';
+import Dashboard from '../pages/dashboard/Dashboard';
 import AuthRoute from './AuthRoute';
 import GuestRoute from './GuestRoute';
 
