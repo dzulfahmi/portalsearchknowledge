@@ -40,6 +40,7 @@ export const getCrawlerCount = () => (dispatch: any, getState: any) => {
 
   httpRequestAxiosService.get('/api/contents/count', tokenConfig(getState))
     .subscribe((resp: any) => {
+      console.log('isi resp', resp);
       dispatch({
         type: CRAWLER_GET_COUNT_SUCCESS,
         resp: resp,

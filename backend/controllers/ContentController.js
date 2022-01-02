@@ -34,10 +34,39 @@ const getContentById = asyncHandler(async (req, res) => {
 // @route   GET /api/contents/count
 // @access  Private/Admin
 const countContents = asyncHandler(async (req, res) => {
+    const start = req.query.start
+    const end = req.query.end ?? new Date().toISOString();
+    const filter = {}
+    if (start) {
+        filter['created_at'] = {
+            $gte: start,
+            $lte: end
+        }
+    }
+
+    const contents = await Content.aggregate([
+        { $match: filter },
+        { $group: {
+            _id: "$content_type",
+            total: { $sum: 1 },
+            elastic: { $sum: "$elastic" }
+        } },
+    ])
+
+    const totalContent = await Content.find().countDocuments()
+    const totalElastic = await Content.find({ elastic: 1}).countDocuments()
+    
+    res.json({ contents, totalContent, totalElastic })
+})
+
+// @desc    Count contents types
+// @route   GET /api/contents/count
+// @access  Private/Admin
+const countContentsByDay = asyncHandler(async (req, res) => {
     const contents = await Content.aggregate([
         { $match: {} },
         { $group: {
-            _id: "$content_type",
+            _id: "$created_at",
             total: { $sum: 1 },
             elastic: { $sum: "$elastic" }
         } },

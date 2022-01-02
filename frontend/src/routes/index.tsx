@@ -1,12 +1,14 @@
 import React from 'react';
 import { Navigate, Routes, Route } from 'react-router-dom';
+
 import AdminLayout from '../layouts/AdminLayout';
+import AuthRoute from './AuthRoute';
+import GuestRoute from './GuestRoute';
+
 import NotFound from '../layouts/NotFound';
 import Login from '../pages/auth/Login';
 import CrawlerList from '../pages/crawler/List';
 import Dashboard from '../pages/dashboard/Dashboard';
-import AuthRoute from './AuthRoute';
-import GuestRoute from './GuestRoute';
 
 
 const Router = () => {

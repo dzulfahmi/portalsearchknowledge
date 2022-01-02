@@ -1,2 +1,8 @@
 Catatan mongoose:
 https://mongoosejs.com/docs/migrating_to_6.html#no-more-deprecation-warning-options
+
+- staging:
+mongodb://scrape:123,Scrape@cluster0-shard-00-00.b00v3.mongodb.net:27017,cluster0-shard-00-01.b00v3.mongodb.net:27017,cluster0-shard-00-02.b00v3.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-d063c9-shard-0&authSource=admin&retryWrites=true&w=majority
+
+- server DIT:
+mongodb://admapp:Admapp#2021@10.62.180.9:27017/test
