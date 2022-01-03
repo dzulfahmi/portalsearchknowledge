@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Content from '../models/ContentModel.js'
+import moment from 'moment';
 
 
 // @desc    Get all contents
@@ -34,8 +35,21 @@ const getContentById = asyncHandler(async (req, res) => {
 // @route   GET /api/contents/count
 // @access  Private/Admin
 const countContents = asyncHandler(async (req, res) => {
-    const start = req.query.start
-    const end = req.query.end ?? new Date().toISOString();
+    // const start = req.query.start;
+    // const end = req.query.end ?? new Date().toISOString();
+    let start = req.body.start ?? new Date();
+    let end = req.body.end ?? new Date().toISOString();
+    console.log('isi req', req.body);
+    console.log('isi req 2', req.query);
+    
+    // if (req.body.param === 'custom') {
+    //     // start = moment(start).subtract(1, 'week').startOf('week').toISOString();
+    //     start = req.body.from;
+    //     end = req.body.to;
+    // }
+    // console.log('isi coba', moment(start).subtract(1, 'week').startOf('week').toISOString());
+    console.log('isi start', start);
+    console.log('isi end', end);
     const filter = {}
     if (start) {
         filter['created_at'] = {
@@ -53,30 +67,27 @@ const countContents = asyncHandler(async (req, res) => {
         } },
     ])
 
-    const totalContent = await Content.find().countDocuments()
+    const contentByFilter = await Content.find({
+        created_at: {
+            $gte: start,
+            $lte:  end
+        }
+    }).countDocuments();
+    const elasticByFilter = await Content.find(
+        {elastic: 1},
+        {
+            created_at: {
+                $gte: start,
+                $lte:  end
+            },
+        }
+    ).countDocuments();
+    const totalContent = await Content.find().countDocuments();
     const totalElastic = await Content.find({ elastic: 1}).countDocuments()
     
-    res.json({ contents, totalContent, totalElastic })
+    res.json({ contents, contentByFilter, elasticByFilter, totalContent, totalElastic })
 })
 
-// @desc    Count contents types
-// @route   GET /api/contents/count
-// @access  Private/Admin
-const countContentsByDay = asyncHandler(async (req, res) => {
-    const contents = await Content.aggregate([
-        { $match: {} },
-        { $group: {
-            _id: "$created_at",
-            total: { $sum: 1 },
-            elastic: { $sum: "$elastic" }
-        } },
-    ])
-
-    const totalContent = await Content.find().countDocuments()
-    const totalElastic = await Content.find({ elastic: 1}).countDocuments()
-    
-    res.json({ contents, totalContent, totalElastic })
-})
 
 export { 
     getContents,

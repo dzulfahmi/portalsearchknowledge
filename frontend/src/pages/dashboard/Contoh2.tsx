@@ -16,7 +16,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import { Line } from '@ant-design/charts';
 
-import { getCrawlerCount } from '../../store/actions/CrawlerAction';
+import { loadCrawlerCount } from '../../store/actions/CrawlerAction';
 import { data1 } from './DummyData';
 
 const { Title, Text, Link } = Typography;
@@ -65,7 +65,7 @@ const Dashboard = () => {
 
 
   useEffect(() => {
-    dispatch(getCrawlerCount())
+    dispatch(loadCrawlerCount())
   }, []);
 
   // -----------------------------------------------------------------------------------------------------------------

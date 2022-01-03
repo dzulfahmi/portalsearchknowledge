@@ -2,6 +2,11 @@ import {useEffect, useRef, useState} from 'react';
 import { 
   Card, 
   Col, 
+  DatePicker,
+  Dropdown,
+  Form,
+  Menu,
+  Modal,
   Row, 
   Layout,
   Statistic, 
@@ -10,13 +15,15 @@ import {
 import {
   FolderTwoTone,
   SmileTwoTone,
-  CalendarTwoTone,
+  DownOutlined,
   BugTwoTone,
 } from "@ant-design/icons";
 import {useDispatch, useSelector} from 'react-redux';
 import { Line } from '@ant-design/charts';
 
-import { getCrawlerCount } from '../../store/actions/CrawlerAction';
+import { loadCrawlerCount } from '../../store/actions/CrawlerAction';
+
+let moment = require('moment');
 
 const { Title, Text, Link } = Typography;
 
@@ -53,19 +60,31 @@ const formItemLayoutWithOutLabel = {
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-	const {info, isLoading, contents, tContent, tElastic} = useSelector((state: any) => ({
+	const {info, isLoading, dContent, contents, tContent, tElastic} = useSelector((state: any) => ({
 		info: state.info,
 		contents: state.craw.contents,
 		tContent: state.craw.tContent,
 		tElastic: state.craw.tElastic,
+    dContent: state.craw.dContent,
 		isLoading: state.craw.isLoading,
 	}));
-  const [page, setPage] = useState(1);
+  const [title, setTitle] = useState(`Hari Ini | ${moment().format('DD-MM-YYYY')}`);
+  const [isOpenCustomRange, setIsOpenCustomRange] = useState(false);
+  const [form] = Form.useForm();
+  const [initVal, setInitVal] = useState({
+    begindate: '',
+    enddate: '',
+  });
 
+  console.log('isi val', dContent);
 
   useEffect(() => {
-    dispatch(getCrawlerCount())
+    loadCC()
   }, []);
+
+  const loadCC = (payload: any = {}) => {
+    dispatch(loadCrawlerCount(payload));
+  }
 
   const config = {
     data,
@@ -85,15 +104,73 @@ const Dashboard = () => {
     },
   };
 
-  let chart: any;
+  const onSubmitCustomRange = (values: any) => {
+    console.log('isi param', values);
+    setIsOpenCustomRange(false);
+    setTitle(`Custom | ${moment(values.begindate).format('DD-MM-YYYY')} - ${moment(values.enddate).format('DD-MM-YYYY')}`);
+    let payload = {
+      param: 'custom',
+      start: values.begindate,
+      end: values.enddate,
+    }
+    loadCC(payload);
+  }
 
-  const downloadImage = () => {
-    chart?.downloadImage();
-  };
+  const onFilterActive = (param: any) => {
+    let start = new Date();
+    let end = new Date().toISOString();
 
-  // Get chart base64 string
-  const toDataURL = () => {
-    console.log(chart?.toDataURL());
+    if (param !== 'custom') {
+      if (param === 'today') {
+        start = new Date();
+        end = new Date().toISOString();
+        setTitle(`Hari Ini | ${moment(start).format('DD-MM-YYYY')}`);
+      } else if (param === 'lastweek') {
+        start = moment(start).subtract(1, 'week').startOf('week').toISOString();
+        setTitle(`1 Minggu Terakhir | ${moment(start).format('DD-MM-YYYY')} - ${moment(end).format('DD-MM-YYYY')}`);
+        // setTitle(`1 Minggu Terakhir | ${moment(start).format('DD-MM-YYYY h:mm:ss')} - ${moment(end).format('DD-MM-YYYY h:mm:ss')}`);
+      } else if (param === 'lastmonth') {
+        start = moment(start).subtract(1, 'month').startOf('month').toISOString();
+        setTitle(`1 Bulan Terakhir | ${moment(start).format('DD-MM-YYYY')} - ${moment(end).format('DD-MM-YYYY')}`);
+      } else if (param === 'last3month') {
+        start = moment(start).subtract(3, 'month').startOf('month').toISOString();
+        setTitle(`3 Bulan Terakhir | ${moment(start).format('DD-MM-YYYY')} - ${moment(end).format('DD-MM-YYYY')}`);
+      } else if (param === 'lastyear') {
+        start = moment(start).subtract(1, 'year').startOf('year').toISOString();
+        setTitle(`1 Tahun Terakhir | ${moment(start).format('DD-MM-YYYY')} - ${moment(end).format('DD-MM-YYYY')}`);
+      }
+      let payload = {param, start, end};
+      loadCC(payload);
+    } else {
+      setIsOpenCustomRange(true);
+    }
+  }
+
+  const menu = (
+    <Menu>
+      <Menu.Item key={0} onClick={() => onFilterActive('today')}>
+        Hari Ini
+      </Menu.Item>
+      <Menu.Item key={1} onClick={() => onFilterActive('lastweek')}>
+        1 Minggu Terakhir
+      </Menu.Item>
+      <Menu.Item key={2} onClick={() => onFilterActive('lastmonth')}>
+        1 Bulan Terakhir
+      </Menu.Item>
+      <Menu.Item key={3} onClick={() => onFilterActive('last3month')}>
+        3 Bulan Terakhir
+      </Menu.Item>
+      <Menu.Item key={4} onClick={() => onFilterActive('lastyear')}>
+        1 Tahun Terakhir
+      </Menu.Item>
+      <Menu.Item key={5} onClick={() => onFilterActive('custom')}>
+        Custom
+      </Menu.Item>
+    </Menu>
+  );
+
+  const fieldConfig = {
+    rules: [{ type: 'object', required: true, message: 'Tolong pilih tanggal!' }],
   };
 
   return (
@@ -107,7 +184,13 @@ const Dashboard = () => {
         {/* Baris 1 */}
         <Col span={24}>
           <Card bordered>
-            <Title level={3}>Selamat Datang di Portal Search Knowledge</Title>
+            <Title level={3}>{title}</Title>
+            <Dropdown overlay={menu} >
+              {/* <Button>Filter</Button> */}
+              <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                Filter <DownOutlined />
+              </a>
+            </Dropdown>
             {/* <Text>This admin dashboard template made with Ant Design and some others library. It will provide some default pages, sidenavs, and others. If you don't know about Ant Design, you could read about it <Link href="https://ant.design" target="_blank">in here</Link></Text> */}
           </Card>
         </Col>
@@ -115,7 +198,7 @@ const Dashboard = () => {
         {/* Baris 2 */}
         <Col xs={24} sm={24} md={18}>
           <Card bordered>
-            <Line {...config} onReady={(chartInstance: any) => (chart = chartInstance)} />
+            <Line {...config} />
           </Card>
         </Col>
         <Col xs={24} sm={24} md={6}>
@@ -127,6 +210,16 @@ const Dashboard = () => {
           <Col>
             <Card bordered>
               <Statistic title="Total Elastic" value={tElastic ? tElastic : 0 } prefix={<SmileTwoTone twoToneColor="#27C7FF" />} />
+            </Card>
+          </Col>
+          <Col>
+            <Card bordered>
+              <Statistic title="Konten" value={dContent ? dContent.contentByFilter : 0} prefix={<FolderTwoTone twoToneColor="#F63E4F" />} />
+            </Card>
+          </Col>
+          <Col>
+            <Card bordered>
+              <Statistic title="Elastic" value={dContent ? dContent.elasticByFilter : 0 } prefix={<SmileTwoTone twoToneColor="#27C7FF" />} />
             </Card>
           </Col>
           <Col>
@@ -147,6 +240,39 @@ const Dashboard = () => {
         })}
       </Row>
       
+      <Modal
+        visible={isOpenCustomRange}
+        title={"Masukan tanggal"}
+        okText={"Filter"}
+        cancelText="Batal"
+        onCancel={() => setIsOpenCustomRange(false)}
+        onOk={() => {
+          form
+            .validateFields()
+            .then(values => {
+              form.resetFields();
+              onSubmitCustomRange(values);
+            })
+            .catch(info => {
+              console.log('Validate Failed:', info);
+            });
+        }}
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          name="form_in_modal"
+          initialValues={initVal}
+        >
+          <Form.Item name="begindate" label="Tanggal Awal" rules={[{ required: true, message: 'Tolong pilih tanggal!' }]}>
+            <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+          </Form.Item>
+
+          <Form.Item name="enddate" label="Tanggal Akhir" rules={[{ required: true, message: 'Tolong pilih tanggal!' }]}>
+            <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </Content>
   )
 };

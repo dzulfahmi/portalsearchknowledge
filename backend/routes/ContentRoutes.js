@@ -14,7 +14,7 @@ const router = express.Router()
 router.route('/')
     .get(protect, admin, getContents)
 router.route('/count')
-    .get(protect, admin, countContents)
+    .post(protect, admin, countContents)
 router.route('/:id')
     .get(protect, admin, getContentById)
 

@@ -7,6 +7,7 @@ const initialState = {
   contents: undefined,
   tContent: undefined,
   tElastic: undefined,
+  dContent: undefined,
 };
 
 export default function (state = initialState, action: any) {
@@ -31,6 +32,7 @@ export default function (state = initialState, action: any) {
     case CRAWLER_GET_COUNT_SUCCESS:
       return {
         ...state,
+        dContent: action.resp,
         contents: action.resp.contents,
         tContent: action.resp.totalContent,
         tElastic: action.resp.totalElastic,

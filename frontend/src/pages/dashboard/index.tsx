@@ -14,7 +14,7 @@ import {
   BugTwoTone,
 } from "@ant-design/icons";
 import {useDispatch, useSelector} from 'react-redux';
-import { getCrawlerCount } from '../../store/actions/CrawlerAction';
+import { loadCrawlerCount } from '../../store/actions/CrawlerAction';
 
 const { Title, Text, Link } = Typography;
 
@@ -62,7 +62,7 @@ const Dashboard = () => {
 
 
   useEffect(() => {
-    dispatch(getCrawlerCount())
+    dispatch(loadCrawlerCount())
   }, []);
 
   return (

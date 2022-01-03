@@ -34,11 +34,11 @@ export const getCrawlerResult = (qparam: any) => (dispatch: any, getState: any) 
   })
 };
 
-// Get Crawler Count
-export const getCrawlerCount = () => (dispatch: any, getState: any) => {
+// Load Crawler Count
+export const loadCrawlerCount = (payload: any = {}) => (dispatch: any, getState: any) => {
   dispatch({type: CRAWLER_LOADING});
 
-  httpRequestAxiosService.get('/api/contents/count', tokenConfig(getState))
+  httpRequestAxiosService.post('/api/contents/count', payload, tokenConfig(getState))
     .subscribe((resp: any) => {
       console.log('isi resp', resp);
       dispatch({
