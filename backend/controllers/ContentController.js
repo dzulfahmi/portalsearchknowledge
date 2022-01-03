@@ -39,17 +39,7 @@ const countContents = asyncHandler(async (req, res) => {
     // const end = req.query.end ?? new Date().toISOString();
     let start = req.body.start ?? new Date();
     let end = req.body.end ?? new Date().toISOString();
-    console.log('isi req', req.body);
-    console.log('isi req 2', req.query);
-    
-    // if (req.body.param === 'custom') {
-    //     // start = moment(start).subtract(1, 'week').startOf('week').toISOString();
-    //     start = req.body.from;
-    //     end = req.body.to;
-    // }
-    // console.log('isi coba', moment(start).subtract(1, 'week').startOf('week').toISOString());
-    console.log('isi start', start);
-    console.log('isi end', end);
+
     const filter = {}
     if (start) {
         filter['created_at'] = {
@@ -73,6 +63,7 @@ const countContents = asyncHandler(async (req, res) => {
             $lte:  end
         }
     }).countDocuments();
+    
     const elasticByFilter = await Content.find(
         {elastic: 1},
         {
