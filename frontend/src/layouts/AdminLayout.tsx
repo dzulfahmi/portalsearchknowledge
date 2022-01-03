@@ -50,7 +50,7 @@ const AdminLayout = (props: any) => {
 
   return (
     <Layout>
-      <Header>
+      <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
         <Row>
           <Col span={3} style={{paddingTop: 15}}>
             <Title style={{color: 'white', justifySelf: 'center'}} level={4}>Portal K</Title>

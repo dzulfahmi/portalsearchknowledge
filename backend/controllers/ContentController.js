@@ -79,10 +79,12 @@ const countContents = asyncHandler(async (req, res) => {
     const contentpermonth = await Content.aggregate([
         {$group: {
             // _id: {$month: "$created_at"}, 
-            _id: {$substr: ['$created_at', 5, 2]},
+            // _id: {$substr: ['$created_at', 5, 2]},
+            _id: {$substr: ['$created_at', 0, 7]},
             numofcontent: {$sum: 1},
             numofelastic: { $sum: "$elastic" } 
-        }}
+        }},
+        //{ $sort: { created_at: 1 } }, // 1,-1
     ]);
 
     let contentvselastic = generateElasticvsContent(contentpermonth);
@@ -108,8 +110,22 @@ const generateElasticvsContent = (param) => {
         contentList.push(content);
         contentList.push(elastic);
     });
+    console.log('isi abcdefgh', contentList);
+    // const sortedContent = contentList.slice().sort();
+    // const sortedContent = contentList.slice().sort((a, b) => b.month > a.month)
+    // console.log('isi ijklmnop', sortedContent);
+    const sortedContent2 =  contentList.sort((b, a) => {
+                                if (b.month > a.month) {
+                                return 1;
+                                }
+                                if (b.month < a.month) {
+                                return -1;
+                                }
+                                return 0;
+                            });
+    // console.log('isi qrstuvwx', sortedContent2);
 
-    return contentList;
+    return sortedContent2;
 }
 
 

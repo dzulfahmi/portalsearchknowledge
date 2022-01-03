@@ -9,7 +9,8 @@ import {
   Modal,
   Row, 
   Layout,
-  Statistic, 
+  Statistic,
+  Table, 
   Typography,
 } from 'antd';
 import {
@@ -87,23 +88,36 @@ const Dashboard = () => {
     dispatch(loadCrawlerCount(payload));
   }
 
-  const config = {
-    data,
-    width: 800,
-    height: 400,
-    autoFit: false,
-    xField: 'year',
-    yField: 'value',
-    point: {
-      size: 5,
-      shape: 'diamond',
+  const columns = [
+    // {
+    //   title: 'Sampul',
+    //   dataIndex: 'img_url',
+    //   key: 'sampul',
+    //   render: (data: any, ind: any) => {
+    //     return <span>
+    //       {data ? 
+    //         <img key={ind} src={ data } className="img-fluid img-bordered" width="100px" />
+    //         : '-'
+    //       }
+    //     </span>
+    //   } 
+    // },
+    {
+      title: 'Tipe Konten',
+      dataIndex: '_id',
+      key: 'tipe_konten',
     },
-    label: {
-      style: {
-        fill: '#aaa',
-      },
+    {
+      title: 'Jumlah Konten',
+      dataIndex: 'total',
+      key: 'jumlah_konten',
     },
-  };
+    {
+      title: 'Elastic',
+      dataIndex: 'elastic',
+      key: 'jumlah_elastic',
+    },
+  ];
 
   // multi line chart
   const COLOR_PLATE_10 = [
@@ -225,6 +239,8 @@ const Dashboard = () => {
       paddingLeft: 12,
       paddingRight: 12,
       minHeight: 600,
+      padding: '0 50px', 
+      marginTop: 72,
     }}>
       <Row gutter={[16, 16]}>
         {/* Baris 1 */}
@@ -276,7 +292,7 @@ const Dashboard = () => {
           </Col>
         </Col>
 
-        {contents && contents.map((item: any, ind: any) => {
+        {/* {contents && contents.map((item: any, ind: any) => {
           return (
             <Col key={ind} xs={24} sm={24} md={6}>
               <Card bordered>
@@ -284,7 +300,23 @@ const Dashboard = () => {
               </Card>
             </Col>    
           )
-        })}
+        })} */}
+        {contents && (contents.length > 0) && (
+          <Col xs={24} sm={24} md={24}>
+            <Table 
+              key="2" 
+              loading={isLoading} 
+              columns={columns} 
+              dataSource={contents} 
+              pagination={{
+                hideOnSinglePage: true,
+                total: contents.length,
+                // onChange: (val) => setPage(val),
+                // onShowSizeChange: (val, val2) => setLimit(val2)
+              }}  
+            />
+          </Col>
+        )}
       </Row>
       
       <Modal
