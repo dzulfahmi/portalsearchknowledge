@@ -267,7 +267,7 @@ const Dashboard = () => {
         <Col xs={24} sm={24} md={6}>
           <Col>
             <Card bordered>
-              <Statistic title="Total Konten" value={tContent ? tContent : 0} prefix={<FolderTwoTone twoToneColor="#F63E4F" />} />
+              <Statistic title="Total Isi Konten" value={tContent ? tContent : 0} prefix={<FolderTwoTone twoToneColor="#F63E4F" />} />
             </Card>
           </Col>
           <Col>
@@ -277,7 +277,7 @@ const Dashboard = () => {
           </Col>
           <Col>
             <Card bordered>
-              <Statistic title="Konten" value={dContent ? dContent.contentByFilter : 0} prefix={<FolderTwoTone twoToneColor="#F63E4F" />} />
+              <Statistic title="Isi Konten" value={dContent ? dContent.contentByFilter : 0} prefix={<FolderTwoTone twoToneColor="#F63E4F" />} />
             </Card>
           </Col>
           <Col>
@@ -287,7 +287,7 @@ const Dashboard = () => {
           </Col>
           <Col>
             <Card bordered>
-              <Statistic title="Tipe Konten" value={contents ? contents.length : 0 } prefix={<SmileTwoTone twoToneColor="#27C7FF" />} />
+              <Statistic title="Konten" value={contents ? contents.length : 0 } prefix={<SmileTwoTone twoToneColor="#27C7FF" />} />
             </Card>
           </Col>
         </Col>

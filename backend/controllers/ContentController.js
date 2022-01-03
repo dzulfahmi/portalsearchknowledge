@@ -77,6 +77,7 @@ const countContents = asyncHandler(async (req, res) => {
     const totalElastic = await Content.find({ elastic: 1}).countDocuments();
 
     const contentpermonth = await Content.aggregate([
+        {$match: filter},
         {$group: {
             // _id: {$month: "$created_at"}, 
             // _id: {$substr: ['$created_at', 5, 2]},
@@ -87,10 +88,26 @@ const countContents = asyncHandler(async (req, res) => {
         //{ $sort: { created_at: 1 } }, // 1,-1
     ]);
 
+    const contentperday = await Content.aggregate([
+        {$match: filter},
+        {$group: {
+            // _id: {$month: "$created_at"}, 
+            // _id: {$substr: ['$created_at', 5, 2]},
+            _id: {$substr: ['$created_at', 0, 10]},
+            numofcontent: {$sum: 1},
+            numofelastic: { $sum: "$elastic" } 
+        }},
+    ]);
+    
     let contentvselastic = generateElasticvsContent(contentpermonth);
+
+    if (req.body.param === 'today' || req.body.param === 'lastweek' || req.body.param === 'lastmonth') {
+        contentvselastic = generateElasticvsContent(contentperday);
+    }
+
     // console.log('isi contentper month', contentpermonth);
     
-    res.json({ contents, contentByFilter, elasticByFilter, totalContent, totalElastic, contentpermonth, contentvselastic })
+    res.json({ contents, contentByFilter, elasticByFilter, totalContent, totalElastic, contentpermonth, contentperday, contentvselastic })
 })
 
 const generateElasticvsContent = (param) => {
