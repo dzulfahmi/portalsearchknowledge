@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { Line } from '@ant-design/charts';
 
 import { loadCrawlerCount } from '../../store/actions/CrawlerAction';
+import { data1 } from './DummyData';
 
 let moment = require('moment');
 
@@ -101,6 +102,51 @@ const Dashboard = () => {
       style: {
         fill: '#aaa',
       },
+    },
+  };
+
+  // multi line chart
+  const COLOR_PLATE_10 = [
+    '#5B8FF9',
+    '#5AD8A6',
+    '#5D7092',
+    '#F6BD16',
+    '#E8684A',
+    '#6DC8EC',
+    '#9270CA',
+    '#FF9D4D',
+    '#269A99',
+    '#FF99C3',
+  ];
+  const config2 = {
+    data: dContent && dContent.contentvselastic ? dContent.contentvselastic : [],
+    xField: 'month',
+    yField: 'count',
+    seriesField: 'type',
+    yAxis: {
+      label: {
+        formatter: (v: any) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
+      },
+    },
+    color: COLOR_PLATE_10,
+    // point: {
+    //   shape: ({ category } : any) => {
+    //     return category === 'Gas fuel' ? 'square' : 'circle';
+    //   },
+    //   style: ({ year }: any) => {
+    //     return {
+    //       r: Number(year) % 4 ? 0 : 3, // 4 个数据示一个点标记
+    //     };
+    //   },
+    // },
+    meta: {
+      count: {
+        alias: 'Jumlah',
+      },
+      month: {
+        alias: 'Bulan',
+      },
+      
     },
   };
 
@@ -198,7 +244,8 @@ const Dashboard = () => {
         {/* Baris 2 */}
         <Col xs={24} sm={24} md={18}>
           <Card bordered>
-            <Line {...config} />
+            <Title level={4}>Konten vs Elastic</Title>
+            <Line {...config2} />
           </Card>
         </Col>
         <Col xs={24} sm={24} md={6}>

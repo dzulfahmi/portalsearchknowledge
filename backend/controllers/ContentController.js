@@ -63,7 +63,7 @@ const countContents = asyncHandler(async (req, res) => {
             $lte:  end
         }
     }).countDocuments();
-    
+
     const elasticByFilter = await Content.find(
         {elastic: 1},
         {
@@ -74,10 +74,43 @@ const countContents = asyncHandler(async (req, res) => {
         }
     ).countDocuments();
     const totalContent = await Content.find().countDocuments();
-    const totalElastic = await Content.find({ elastic: 1}).countDocuments()
+    const totalElastic = await Content.find({ elastic: 1}).countDocuments();
+
+    const contentpermonth = await Content.aggregate([
+        {$group: {
+            // _id: {$month: "$created_at"}, 
+            _id: {$substr: ['$created_at', 5, 2]},
+            numofcontent: {$sum: 1},
+            numofelastic: { $sum: "$elastic" } 
+        }}
+    ]);
+
+    let contentvselastic = generateElasticvsContent(contentpermonth);
+    // console.log('isi contentper month', contentpermonth);
     
-    res.json({ contents, contentByFilter, elasticByFilter, totalContent, totalElastic })
+    res.json({ contents, contentByFilter, elasticByFilter, totalContent, totalElastic, contentpermonth, contentvselastic })
 })
+
+const generateElasticvsContent = (param) => {
+    let contentList = [];
+    param.forEach(element => {
+        let content = {
+            month: element._id,
+            type: 'content',
+            count: element.numofcontent
+        }
+
+        let elastic = {
+            month: element._id,
+            type: 'elastic',
+            count: element.numofelastic
+        }
+        contentList.push(content);
+        contentList.push(elastic);
+    });
+
+    return contentList;
+}
 
 
 export { 
