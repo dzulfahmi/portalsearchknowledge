@@ -1,3 +1,4 @@
+import path from 'path'
 import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
@@ -20,16 +21,27 @@ const PORT = process.env.PORT;
 const ENV = process.env.APP_ENV;
 
 console.log('isi env', ENV, PORT);
-if (ENV === 'staging' || ENV === 'local') {
+if (ENV === 'staging' || ENV === 'development') {
   app.use(morgan('dev'))
 }
 
-if (ENV === 'production' || ENV === 'staging') {
-  app.use((req, res, next) => {
-    if (req.header('x-forwarded-proto') !== 'https') 
-      res.redirect(`https://${req.header('host')}${req.url}`)
-    else
-      next()
+// if (ENV === 'production' || ENV === 'staging') {
+//   app.use((req, res, next) => {
+//     if (req.header('x-forwarded-proto') !== 'https') 
+//       res.redirect(`https://${req.header('host')}${req.url}`)
+//     else
+//       next()
+//   })
+// }
+
+const __dirname = path.resolve()
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')))
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')))
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running...')
   })
 }
 
