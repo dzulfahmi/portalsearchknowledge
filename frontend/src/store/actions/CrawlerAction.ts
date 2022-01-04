@@ -4,7 +4,7 @@ import { CRAWLER_GET_COUNT_FAIL, CRAWLER_GET_COUNT_SUCCESS, CRAWLER_GET_FAIL, CR
 import { tokenConfig } from './AuthAction';
 
 // Get Crawler Result
-export const getCrawlerResult = (qparam: any) => (dispatch: any, getState: any) => {
+export const getCrawlerResult = (qparam: any = {}) => (dispatch: any, getState: any) => {
   dispatch({type: CRAWLER_LOADING});
 
   let param = {

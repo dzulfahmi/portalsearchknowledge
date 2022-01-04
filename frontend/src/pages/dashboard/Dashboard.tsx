@@ -22,7 +22,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import { Line } from '@ant-design/charts';
 
-import { loadCrawlerCount } from '../../store/actions/CrawlerAction';
+import { getCrawlerResult, loadCrawlerCount } from '../../store/actions/CrawlerAction';
 import { data1 } from './DummyData';
 
 let moment = require('moment');
@@ -82,6 +82,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadCC()
+    dispatch(getCrawlerResult());
   }, []);
 
   const loadCC = (payload: any = {}) => {

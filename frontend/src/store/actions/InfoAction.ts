@@ -1,6 +1,6 @@
-import { GET_ERRORS, GET_SUCCESS, CLEAR_INFO } from '../types';
+import { GET_ERRORS, GET_SUCCESS, CLEAR_INFO, LOGOUT_SUCCESS } from '../types';
 // RETURN ERRORS
-export const returnErrors = (message: any, status: any, id: any = null, message2: any = '') => {
+export const returnErrors = (message: any, status: any, id: any = null, message2: any = '') => (dispatch: any) => {
   let msg = {
     message: '',
     status: status
@@ -19,6 +19,12 @@ export const returnErrors = (message: any, status: any, id: any = null, message2
     }
   } else {
     msg.message = message2
+  }
+
+  if (message && (message.status === 401 && message.statusText === "Unauthorized")) {
+    dispatch({
+      type: LOGOUT_SUCCESS,
+    });
   }
 
   return {
