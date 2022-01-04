@@ -2,6 +2,7 @@ import {httpRequestAxiosService} from '../../services';
 import {returnErrors, returnSuccess} from './InfoAction';
 import { CRAWLER_GET_COUNT_FAIL, CRAWLER_GET_COUNT_SUCCESS, CRAWLER_GET_FAIL, CRAWLER_GET_SUCCESS, CRAWLER_LOADING } from '../types';
 import { tokenConfig } from './AuthAction';
+import axios from 'axios';
 
 // Get Crawler Result
 export const getCrawlerResult = (qparam: any = {}) => (dispatch: any, getState: any) => {
@@ -12,6 +13,8 @@ export const getCrawlerResult = (qparam: any = {}) => (dispatch: any, getState: 
     limit: qparam && qparam.limit ? qparam.limit : 10,
   };
 
+  const { data }: any = axios.get(`/api/contents?limit=${param.limit}&page=${param.page}`, tokenConfig(getState))
+  console.log('isi data', data);
   // httpRequestAxiosService.get('/api/contents/count2', tokenConfig(getState))
   httpRequestAxiosService.get(`/api/contents?limit=${param.limit}&page=${param.page}`, tokenConfig(getState))
     .subscribe((resp: any) => {
