@@ -6,7 +6,8 @@ import {
 import { 
     countContents,
     getContentById, 
-    getContents 
+    getContents,
+    countContents2
 } from '../controllers/ContentController.js'
 
 const router = express.Router()
@@ -15,6 +16,8 @@ router.route('/')
     .get(protect, admin, getContents)
 router.route('/count')
     .post(protect, admin, countContents)
+router.route('/count2')
+    .get(protect, admin, countContents2)
 router.route('/:id')
     .get(protect, admin, getContentById)
 

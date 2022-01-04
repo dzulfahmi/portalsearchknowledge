@@ -145,9 +145,35 @@ const generateElasticvsContent = (param) => {
     return sortedContent2;
 }
 
+const countContents2 = asyncHandler(async (req, res) => {
+    const start = req.query.start
+    const end = req.query.end ?? new Date().toISOString();
+    const filter = {}
+    if (start) {
+        filter['created_at'] = {
+            $gte: start,
+            $lte: end
+        }
+    }
+
+    const contents = await Content.aggregate([
+        { $match: filter },
+        { $group: {
+            _id: "$content_type",
+            total: { $sum: 1 },
+            elastic: { $sum: "$elastic" }
+        } },
+    ])
+
+    const totalContent = await Content.find().countDocuments()
+    const totalElastic = await Content.find({ elastic: 1}).countDocuments()
+    
+    res.json({ contents, totalContent, totalElastic })
+})
 
 export { 
     getContents,
     getContentById,
-    countContents
+    countContents,
+    countContents2
 }
