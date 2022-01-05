@@ -13,7 +13,7 @@ import {
 const router = express.Router()
 
 router.route('/')
-    .get(protect, admin, getContents)
+    .post(protect, admin, getContents)
 router.route('/count')
     .post(protect, admin, countContents)
 router.route('/count2')

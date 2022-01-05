@@ -13,10 +13,10 @@ export const getCrawlerResult = (qparam: any = {}) => (dispatch: any, getState: 
     limit: qparam && qparam.limit ? qparam.limit : 10,
   };
 
-  const { data }: any = axios.get(`/api/contents?limit=${param.limit}&page=${param.page}`, tokenConfig(getState))
-  console.log('isi data', data);
+  // const { data }: any = axios.get(`/api/contents?limit=${param.limit}&page=${param.page}`, tokenConfig(getState))
+  // console.log('isi data', data);
   // httpRequestAxiosService.get('/api/contents/count2', tokenConfig(getState))
-  httpRequestAxiosService.get(`/api/contents?limit=${param.limit}&page=${param.page}`, tokenConfig(getState))
+  httpRequestAxiosService.post(`/api/contents?limit=${param.limit}&page=${param.page}`, tokenConfig(getState))
     .subscribe((resp: any) => {
       console.log('isi resp', resp);
       dispatch({
