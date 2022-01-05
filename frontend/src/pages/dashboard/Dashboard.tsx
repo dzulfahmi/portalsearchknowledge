@@ -82,7 +82,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadCC()
-    dispatch(getCrawlerResult());
+    // dispatch;(getCrawlerResult());
   }, []);
 
   const loadCC = (payload: any = {}) => {
