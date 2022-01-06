@@ -78,8 +78,6 @@ const Dashboard = () => {
     enddate: '',
   });
 
-  console.log('isi val', dContent);
-
   useEffect(() => {
     loadCC()
     // dispatch;(getCrawlerResult());
@@ -166,7 +164,6 @@ const Dashboard = () => {
   };
 
   const onSubmitCustomRange = (values: any) => {
-    console.log('isi param', values);
     setIsOpenCustomRange(false);
     setTitle(`Custom | ${moment(values.begindate).format('DD-MM-YYYY')} - ${moment(values.enddate).format('DD-MM-YYYY')}`);
     let payload = {

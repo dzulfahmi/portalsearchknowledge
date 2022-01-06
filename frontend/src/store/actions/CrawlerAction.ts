@@ -18,7 +18,6 @@ export const getCrawlerResult = (qparam: any = {}) => (dispatch: any, getState: 
   // httpRequestAxiosService.get('/api/contents/count2', tokenConfig(getState))
   httpRequestAxiosService.post(`/api/contents?limit=${param.limit}&page=${param.page}`, {}, tokenConfig(getState))
     .subscribe((resp: any) => {
-      console.log('isi resp', resp);
       dispatch({
         type: CRAWLER_GET_SUCCESS,
         resp: resp,
@@ -45,7 +44,6 @@ export const loadCrawlerCount = (payload: any = {}) => (dispatch: any, getState:
 
   httpRequestAxiosService.post('/api/contents/count', payload, tokenConfig(getState))
     .subscribe((resp: any) => {
-      console.log('isi resp', resp);
       dispatch({
         type: CRAWLER_GET_COUNT_SUCCESS,
         resp: resp,

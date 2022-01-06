@@ -127,7 +127,6 @@ const generateElasticvsContent = (param) => {
         contentList.push(content);
         contentList.push(elastic);
     });
-    console.log('isi abcdefgh', contentList);
     // const sortedContent = contentList.slice().sort();
     // const sortedContent = contentList.slice().sort((a, b) => b.month > a.month)
     // console.log('isi ijklmnop', sortedContent);

@@ -29,8 +29,6 @@ const CrawlerList = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
 
-  console.log('isi cList', cList);
-
   useEffect(() => {
     loadContent()
   }, [page, limit]);
