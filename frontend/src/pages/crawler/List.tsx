@@ -105,6 +105,8 @@ const CrawlerList = () => {
       paddingLeft: 12,
       paddingRight: 12,
       minHeight: 600,
+      padding: '0 50px', 
+      marginTop: 72,
     }}>
       <PageHeader
         className="site-page-header"
